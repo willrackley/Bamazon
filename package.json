@@ -1,0 +1,25 @@
+{
+  "name": "Bamazon",
+  "version": "1.0.0",
+  "description": "This application is an amazon-like storefront that uses mySQL and Node.js. The app takes in orders from customers and depletes stock from the store's inventory. The 'manager' of the store can also view and add inventory and add new products.",
+  "main": "index.js",
+  "dependencies": {
+    "inquirer": "^6.2.2",
+    "mysql": "^2.16.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/willrackley/Bamazon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/willrackley/Bamazon/issues"
+  },
+  "homepage": "https://github.com/willrackley/Bamazon#readme"
+}
