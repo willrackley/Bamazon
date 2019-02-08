@@ -1,7 +1,9 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
-var quantityId = 0;
+var choiceId = 0;
+var choiceQuantity = 0;
+
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -26,7 +28,12 @@ var connection = mysql.createConnection({
 
       }, function(err, res) {
         if (err) throw err;
-        console.log(res[0].stock_quantity);
+
+        if(choiceQuantity > res[0].stock_quantity){
+            console.log("Sorry, we do not have the inventory to complete your order");
+        } else if (choiceQuantity > res[0].stock_quantity) {
+            //make the order go through and subtract that order from the table 
+        }
         connection.end();
       });
   }
@@ -55,9 +62,9 @@ var connection = mysql.createConnection({
     
         }
         ]).then(function(answer) {
-            
-            quantityId = parseInt(answer.idChoice);
-            getQuantity(quantityId);
+            choiceQuantity = parseInt(answer.unitQuantity);
+            choiceId = parseInt(answer.idChoice);
+            getQuantity(choiceId);
            
         }); 
       
