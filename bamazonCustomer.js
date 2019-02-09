@@ -3,7 +3,8 @@ var inquirer = require("inquirer");
 
 var choiceId = 0;
 var choiceQuantity = 0;
-
+var quantityTotal = 0;
+var itemPrice = 0;
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -18,8 +19,29 @@ var connection = mysql.createConnection({
 
   connection.connect(function(err) {
     if (err) throw err;
-    console.log("connected as id " + connection.threadId);
+    displayTable();
   });
+
+  function updateProduct(idChoice, totalQuantity) {
+   
+    var query = connection.query(
+      "UPDATE products SET ? WHERE ?",
+      [
+        {
+          stock_quantity: totalQuantity
+        },
+        {
+          item_id: idChoice
+        }
+      ],
+      function(err, res) {
+        if (err) throw err;
+        var totalCost = choiceQuantity * itemPrice;
+        console.log(idChoice + " " + totalQuantity);
+        console.log("Your total cost is " + "$" + totalCost);
+      }
+    );
+  }
 
   function getQuantity(userChoice){
       connection.query("SELECT stock_quantity FROM products WHERE ?",
@@ -31,8 +53,8 @@ var connection = mysql.createConnection({
 
         if(choiceQuantity > res[0].stock_quantity){
             console.log("Sorry, we do not have the inventory to complete your order");
-        } else if (choiceQuantity > res[0].stock_quantity) {
-            //make the order go through and subtract that order from the table 
+        } else if (choiceQuantity < res[0].stock_quantity) {
+            updateProduct(choiceId, quantityTotal);
         }
         connection.end();
       });
@@ -47,7 +69,7 @@ var connection = mysql.createConnection({
           console.log("\n" + res[i].item_id + " | " + res[i].product_name + " | " + res[i].price);
           console.log("____________________________________");
       }
-
+      
       inquirer.prompt([
       
         {
@@ -64,6 +86,8 @@ var connection = mysql.createConnection({
         ]).then(function(answer) {
             choiceQuantity = parseInt(answer.unitQuantity);
             choiceId = parseInt(answer.idChoice);
+            quantityTotal = res[choiceId-1].stock_quantity - choiceQuantity;
+            itemPrice = res[choiceId - 1].price;
             getQuantity(choiceId);
            
         }); 
@@ -75,4 +99,4 @@ var connection = mysql.createConnection({
   
   
 
-  displayTable();
+  
