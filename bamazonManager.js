@@ -1,6 +1,14 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
+var choiceId = 0;
+var choiceQuantity = 0;
+var quantityTotal = 0;
+var pName = "";
+var dName = "";
+var price = 0;
+
+
 var connection = mysql.createConnection({
     host: "localhost",
   
@@ -46,6 +54,10 @@ var connection = mysql.createConnection({
 
             case "Add to Inventory":
                 addInventory();
+                break;
+
+            case "Add New Product":
+                addNewProduct();
                 break;
             }
         }); 
@@ -129,4 +141,53 @@ function addInventory(){
           }); 
       });
 }
+
+function addProductRow(pName, dName, price, quantity){
+    connection.query(
+        "INSERT INTO products SET ?",
+        {
+          product_name: pName,
+          department_name: dName,
+          price: price,
+          stock_quantity: quantity
+        },
+        function(err, res) {
+          console.log(pName + " has been added!\n");
+          console.log("\n");
+          runLogic();
+        }
+    );
+}
+
+function addNewProduct(){
+    inquirer.prompt([
+    {
+        name: "name",
+        type: "input",
+        message: "\nWhat is the name of the product?"
+    },
+    {
+        name: "dName",
+        type: "input",
+        message: "What department does the product belong to?"
+    },
+    {
+        name: "price",
+        type: "input",
+        message: "\nHow much does the product cost?"
+    },
+    {
+        name: "quantity",
+        type: "input",
+        message: "\nHow many units would you like to add?"
+    },
+    ]).then(function(answer) {
+        choiceQuantity = parseInt(answer.quantity);
+        pName = answer.name;
+        dName = answer.dName
+        price = parseFloat(answer.price);
+        addProductRow(pName, dName, price, choiceQuantity);
+    }); 
+}
+
 
