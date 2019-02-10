@@ -37,7 +37,7 @@ var connection = mysql.createConnection({
       function(err, res) {
         if (err) throw err;
         var totalCost = choiceQuantity * itemPrice;
-        console.log(idChoice + " " + totalQuantity);
+      
         console.log("Your total cost is " + "$" + totalCost);
       }
     );
