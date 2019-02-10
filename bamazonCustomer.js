@@ -66,7 +66,7 @@ var connection = mysql.createConnection({
       if (err) throw err;
 
       for(var i=0; i < res.length; i++){
-          console.log("\n" + res[i].item_id + " | " + res[i].product_name + " | " + res[i].price);
+        console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price);
           console.log("____________________________________");
       }
       
