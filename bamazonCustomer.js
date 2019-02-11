@@ -1,10 +1,16 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var Table = require('cli-table');
 
 var choiceId = 0;
 var choiceQuantity = 0;
 var quantityTotal = 0;
 var itemPrice = 0;
+var totalCost = 0;
+var products = new Table({
+  head: ['Item id', 'Product', 'Price']
+, colWidths: [50, 50, 50]
+});
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -22,6 +28,24 @@ var connection = mysql.createConnection({
     displayTable();
   });
 
+  function updateProductSales(idChoice, totalSales) {
+    var query = connection.query(
+      "UPDATE products SET ? WHERE ?",
+      [
+        {
+          product_sales: totalSales
+        },
+        {
+          item_id: idChoice
+        }
+      ],
+      function(err, res) {
+        if (err) throw err;
+        
+      }
+    );
+  }
+
   function updateProduct(idChoice, totalQuantity) {
    
     var query = connection.query(
@@ -36,14 +60,13 @@ var connection = mysql.createConnection({
       ],
       function(err, res) {
         if (err) throw err;
-        var totalCost = choiceQuantity * itemPrice;
       
-        console.log("Your total cost is " + "$" + totalCost);
+        console.log("\nYour total cost is " + "$" + totalCost + "." + "\nThank you for your order!" + "\n");
       }
     );
   }
 
-  function getQuantity(userChoice){
+  function userTransaction(userChoice){
       connection.query("SELECT stock_quantity FROM products WHERE ?",
       {
           item_id: userChoice
@@ -55,6 +78,8 @@ var connection = mysql.createConnection({
             console.log("Sorry, we do not have the inventory to complete your order");
         } else if (choiceQuantity < res[0].stock_quantity) {
             updateProduct(choiceId, quantityTotal);
+            updateProductSales(choiceId, totalSales);
+
         }
         connection.end();
       });
@@ -66,10 +91,13 @@ var connection = mysql.createConnection({
       if (err) throw err;
 
       for(var i=0; i < res.length; i++){
-        console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price);
-          console.log("____________________________________");
+        //console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price);
+          //console.log("____________________________________");
+          products.push(
+            [res[i].item_id , res[i].product_name, res[i].price]
+          );
       }
-      
+      console.log(products.toString());
       inquirer.prompt([
       
         {
@@ -88,12 +116,11 @@ var connection = mysql.createConnection({
             choiceId = parseInt(answer.idChoice);
             quantityTotal = res[choiceId-1].stock_quantity - choiceQuantity;
             itemPrice = res[choiceId - 1].price;
-            getQuantity(choiceId);
+            totalCost = choiceQuantity * itemPrice;
+            totalSales = res[choiceId -1].product_sales + totalCost;
+            userTransaction(choiceId);
            
         }); 
-      
-       
-      //connection.end();
     });
   }
   

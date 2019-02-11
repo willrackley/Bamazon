@@ -4,6 +4,7 @@
   "description": "This application is an amazon-like storefront that uses mySQL and Node.js. The app takes in orders from customers and depletes stock from the store's inventory. The 'manager' of the store can also view and add inventory and add new products.",
   "main": "index.js",
   "dependencies": {
+    "cli-table": "^0.3.1",
     "inquirer": "^6.2.2",
     "mysql": "^2.16.0"
   },

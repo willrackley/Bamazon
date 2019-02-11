@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var Table = require('cli-table');
 
 var choiceId = 0;
 var choiceQuantity = 0;
@@ -7,6 +8,10 @@ var quantityTotal = 0;
 var pName = "";
 var dName = "";
 var price = 0;
+var products = new Table({
+    head: ['Item id', 'Product', 'Price', 'Stock Quantity']
+  , colWidths: [25, 25, 25, 25]
+  });
 
 
 var connection = mysql.createConnection({
@@ -65,25 +70,44 @@ var connection = mysql.createConnection({
   }
 
 function displayTable() {
+    products = new Table({
+        head: ['Item id', 'Product', 'Price', 'Stock Quantity']
+      , colWidths: [25, 25, 25, 25]
+      });
+
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
 
         for(var i=0; i < res.length; i++){
-            console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price + " | " + "Stock Quantity: " + res[i].stock_quantity);
-            console.log("____________________________________");
+            // console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price + " | " + "Stock Quantity: " + res[i].stock_quantity);
+            // console.log("____________________________________");
+            products.push(
+                [res[i].item_id , res[i].product_name, res[i].price, res[i].stock_quantity]
+            );
         }   
+        console.log(products.toString());
         console.log("\n");
         runLogic();
     });
 }
 
 function lowInventory(){
+
+    products = new Table({
+        head: ['Item id', 'Product', 'Price', 'Stock Quantity']
+        , colWidths: [25, 25, 25, 25]
+    });
+
     var query = "SELECT * FROM products WHERE stock_quantity < 5";
     connection.query(query, function(err, res) {
         for (var i = 0; i < res.length; i++) {
-            console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price + " | " + "Stock Quantity: " + res[i].stock_quantity);
-            console.log("____________________________________");
+            // console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price + " | " + "Stock Quantity: " + res[i].stock_quantity);
+            // console.log("____________________________________");
+            products.push(
+                [res[i].item_id , res[i].product_name, res[i].price, res[i].stock_quantity]
+            );
         }
+        console.log(products.toString());
         console.log("\n");
         runLogic();
     });
@@ -112,13 +136,23 @@ function updateInventory(idChoice, totalQuantity) {
   }
 
 function addInventory(){
+
+    products = new Table({
+        head: ['Item id', 'Product', 'Price', 'Stock Quantity']
+        , colWidths: [25, 25, 25, 25]
+    });
+
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
   
         for(var i=0; i < res.length; i++){
-            console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price + " | " + "Stock Quantity: " + res[i].stock_quantity);
-            console.log("____________________________________");
+            // console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price + " | " + "Stock Quantity: " + res[i].stock_quantity);
+            // console.log("____________________________________");
+            products.push(
+                [res[i].item_id , res[i].product_name, res[i].price, res[i].stock_quantity]
+            );
         }
+        console.log(products.toString());
         console.log('\n');
         inquirer.prompt([
         
