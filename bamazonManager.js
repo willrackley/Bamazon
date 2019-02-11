@@ -79,8 +79,7 @@ function displayTable() {
         if (err) throw err;
 
         for(var i=0; i < res.length; i++){
-            // console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price + " | " + "Stock Quantity: " + res[i].stock_quantity);
-            // console.log("____________________________________");
+            
             products.push(
                 [res[i].item_id , res[i].product_name, res[i].price, res[i].stock_quantity]
             );
@@ -101,8 +100,7 @@ function lowInventory(){
     var query = "SELECT * FROM products WHERE stock_quantity < 5";
     connection.query(query, function(err, res) {
         for (var i = 0; i < res.length; i++) {
-            // console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price + " | " + "Stock Quantity: " + res[i].stock_quantity);
-            // console.log("____________________________________");
+        
             products.push(
                 [res[i].item_id , res[i].product_name, res[i].price, res[i].stock_quantity]
             );
@@ -146,8 +144,7 @@ function addInventory(){
         if (err) throw err;
   
         for(var i=0; i < res.length; i++){
-            // console.log("\n" + "Position: " + res[i].item_id + " | " + "Product: " +  res[i].product_name + " | " + "Price: " + res[i].price + " | " + "Stock Quantity: " + res[i].stock_quantity);
-            // console.log("____________________________________");
+            
             products.push(
                 [res[i].item_id , res[i].product_name, res[i].price, res[i].stock_quantity]
             );
