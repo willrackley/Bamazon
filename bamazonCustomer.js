@@ -5,8 +5,11 @@ var Table = require('cli-table');
 var choiceId = 0;
 var choiceQuantity = 0;
 var quantityTotal = 0;
+var itemId = 0;
 var itemPrice = 0;
 var totalCost = 0;
+
+//object variable for displaying the table
 var products = new Table({
   head: ['Item id', 'Product', 'Price']
 , colWidths: [50, 50, 50]
@@ -74,12 +77,13 @@ var connection = mysql.createConnection({
       }, function(err, res) {
         if (err) throw err;
 
+        
+
         if(choiceQuantity > res[0].stock_quantity){
             console.log("Sorry, we do not have the inventory to complete your order");
         } else if (choiceQuantity < res[0].stock_quantity) {
-            updateProduct(choiceId, quantityTotal);
-            updateProductSales(choiceId, totalSales);
-
+            updateProduct(itemId, quantityTotal);
+            updateProductSales(itemId, totalSales);
         }
         connection.end();
       });
@@ -91,7 +95,7 @@ var connection = mysql.createConnection({
       if (err) throw err;
 
       for(var i=0; i < res.length; i++){
-        
+
           products.push(
             [res[i].item_id , res[i].product_name, res[i].price]
           );
@@ -113,11 +117,20 @@ var connection = mysql.createConnection({
         ]).then(function(answer) {
             choiceQuantity = parseInt(answer.unitQuantity);
             choiceId = parseInt(answer.idChoice);
-            quantityTotal = res[choiceId-1].stock_quantity - choiceQuantity;
-            itemPrice = res[choiceId - 1].price;
+            itemId = parseInt(answer.idChoice);
+
+            //need to loop through to get the correct index of item in case the item_id is not the same as the res (index - 1)
+            for(var i=0; i < res.length; i++){
+              if(choiceId === res[i].item_id){
+               choiceId = i;
+              }
+            }
+            
+            quantityTotal = res[choiceId].stock_quantity - choiceQuantity;
+            itemPrice = res[choiceId].price;
             totalCost = choiceQuantity * itemPrice;
-            totalSales = res[choiceId -1].product_sales + totalCost;
-            userTransaction(choiceId);
+            totalSales = res[choiceId].product_sales + totalCost;
+            userTransaction(itemId);
            
         }); 
     });

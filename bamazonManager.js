@@ -3,11 +3,14 @@ var inquirer = require("inquirer");
 var Table = require('cli-table');
 
 var choiceId = 0;
+var itemId = 0;
 var choiceQuantity = 0;
 var quantityTotal = 0;
 var pName = "";
 var dName = "";
 var price = 0;
+
+//object variable for displaying the table
 var products = new Table({
     head: ['Item id', 'Product', 'Price', 'Stock Quantity']
   , colWidths: [25, 25, 25, 25]
@@ -42,7 +45,7 @@ var connection = mysql.createConnection({
                 "View Products for Sale",
                 "View Low Inventory",
                 "Add to Inventory",
-                "Add New Product"
+                "Add New Product",
             ]
         },
         
@@ -167,8 +170,17 @@ function addInventory(){
           ]).then(function(answer) {
               choiceQuantity = parseInt(answer.unitQuantity);
               choiceId = parseInt(answer.idChoice);
-              quantityTotal = res[choiceId-1].stock_quantity + choiceQuantity;
-              updateInventory(choiceId, quantityTotal);
+              itemId = parseInt(answer.idChoice);
+
+              //need to loop through to get the correct index of item in case the item_id is not the same as the res (index - 1)
+              for(var i=0; i < res.length; i++){
+                if(choiceId === res[i].item_id){
+                choiceId = i;
+                }
+              }
+
+              quantityTotal = res[choiceId].stock_quantity + choiceQuantity;
+              updateInventory(itemId, quantityTotal);
           }); 
       });
 }
@@ -183,7 +195,7 @@ function addProductRow(pName, dName, price, quantity){
           stock_quantity: quantity
         },
         function(err, res) {
-          console.log(pName + " has been added!\n");
+          console.log("\n" + pName + " has been added!\n");
           console.log("\n");
           runLogic();
         }
@@ -220,5 +232,6 @@ function addNewProduct(){
         addProductRow(pName, dName, price, choiceQuantity);
     }); 
 }
+
 
 

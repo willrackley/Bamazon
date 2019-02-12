@@ -2,6 +2,7 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 var Table = require('cli-table');
 
+//object variable for displaying the table
 var products = new Table({
     head: ['Department Id', 'Department Name', 'Over Head Cost', 'Product Sales', 'Total Profits']
   , colWidths: [25, 25, 25, 25, 25] 
