@@ -2,6 +2,9 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 var Table = require('cli-table');
 
+var overHead = 0;
+var dName = "";
+
 //object variable for displaying the table
 var products = new Table({
     head: ['Department Id', 'Department Name', 'Over Head Cost', 'Product Sales', 'Total Profits']
@@ -27,31 +30,30 @@ var connection = mysql.createConnection({
 
 
 function runLogic(){
-inquirer.prompt([
-    
-    {
-        name: "initialPrompt",
-        type: "list",
-        message: "What would you like to do?",
-        choices: [
-            "View Product Sales by Department",
-            "Create New Department",
-        ]
-    },
-    
-    ]).then(function(answer) {
-        console.log("\n");
-        switch(answer.initialPrompt) {
-        case "View Product Sales by Department":
-            displayJoinedTable();
-            break;
+    console.log("\n");
+    inquirer.prompt([
+        {
+            name: "initialPrompt",
+            type: "list",
+            message: "What would you like to do?",
+            choices: [
+                "View Product Sales by Department",
+                "Create New Department",
+            ]
+        },
+        ]).then(function(answer) {
+            
+            switch(answer.initialPrompt) {
+            case "View Product Sales by Department":
+                displayJoinedTable();
+                break;
 
-        case "Create New Department":
-            lowInventory();
-            break;
+            case "Create New Department":
+                newDepartment();
+                break;
 
-        }
-    }); 
+            }
+        }); 
 }
 
 function displayJoinedTable(){
@@ -72,5 +74,39 @@ function displayJoinedTable(){
         console.log("\n");
         runLogic();
     });
+}
+
+function addNewDept(dName, overHead){
+    connection.query(
+        "INSERT INTO departments SET ?",
+        {
+          department_name: dName,
+          over_head_costs: overHead
+        },
+        function(err, res) {
+          console.log("\nThe " + dName + " department has been added.\n");
+          console.log("\n");
+          runLogic();
+        }
+    );
+}
+
+function newDepartment(){
+    inquirer.prompt([
+        {
+            name: "dName",
+            type: "input",
+            message: "\nWhat is the name of the new department?"
+        },
+        {
+            name: "oCost",
+            type: "input",
+            message: "What is the over head cost for the department?"
+        },
+        ]).then(function(answer) {
+            overHead = parseInt(answer.oCost);
+            dName = answer.dName;
+            addNewDept(dName, overHead);
+        }); 
 }
 
