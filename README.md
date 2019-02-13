@@ -17,11 +17,13 @@ This application is an amazon-like storefront that uses mySQL and Node.js. The a
 
 * Viewing the products for sale and the products that have low inventory
 
-![Viewing Products and Low Inventory](managerFirst2.gif)
+![Viewing Products](manViewAll.png)
+![Viewing Low Inventory Products](manViewLow.png)
+
 
 * Adding to Inventory. Once inventory has been added, the application tells the manager that the inventory has been added and tells them how many units are availabe for purchase.
 
-![Adding Inventory](addInv.gif)
+![Adding Inventory](addInv.png)
 
 * Adding a new product. The manager is prompted to input the name, department, price and stock quantity of the new product and after that the info is added to the stores database.
 
