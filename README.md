@@ -1,5 +1,6 @@
 # Bamazon
 This application is an amazon-like storefront that uses mySQL and Node.js. The app takes in orders from customers and depletes stock from the store's inventory. The 'manager' of the store can also view and add inventory and add new products. The 'supervisor' of the store has the ability to view the total profit of each department and also create new departments.
+##
 
 ## The Customer
 * As a customer, you are presented a table of the products that are available for sale. You are able to choose a product by specifying the item id and the amount of units you would like to purchase. 
@@ -11,6 +12,7 @@ This application is an amazon-like storefront that uses mySQL and Node.js. The a
 * If the store does not have enough inventory to fullfill your order, then it will tell you that there is insufficent inventory and the products table will re-display and allow you to change your order.
 
 ![Insufficient Stock](custInsuff.png)
+##
 
 ## The Manager
 * As a manager, when you log into the store you are presented with 4 menu options: View Products for Sale, View Low Inventory, Add to Inventory, and Add New Product.
@@ -29,6 +31,7 @@ This application is an amazon-like storefront that uses mySQL and Node.js. The a
 
 ![Adding a new product](addItem.png)
 ![Table with new item](afterAdded.png)
+##
 
 
 ## The Supervisor
