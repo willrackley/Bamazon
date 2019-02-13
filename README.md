@@ -27,7 +27,7 @@ This application is an amazon-like storefront that uses mySQL and Node.js. The a
 
 * Adding a new product. The manager is prompted to input the name, department, price and stock quantity of the new product and after that the info is added to the stores database.
 
-![Adding a new product](addItem.gif)
+![Adding a new product](addItem.png)
 ![Table with new item](afterAdded.png)
 
 
@@ -39,12 +39,12 @@ This application is an amazon-like storefront that uses mySQL and Node.js. The a
 
 * Creating a Department. 
 
-![Adding a Department](addDp.gif)
+![Adding a Department](addDp.png)
 
 * The database table before adding the department
 
-![department table before adding dept](dTableBefore.png)
+![department table before adding dept](dTableAfter.png)
 
 * The database table after adding the department
 
-![department table after adding dept](dTableAfter.png)
+![department table after adding dept](dpHardware.png)
