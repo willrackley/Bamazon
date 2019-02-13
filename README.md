@@ -6,11 +6,11 @@ This application is an amazon-like storefront that uses mySQL and Node.js. The a
 
 * If the store has enough inventory, you will be presented with the amount of money that you owe and the table is updated with the available inventory and product sales. 
 
-![Item Bought](customerBuy.gif)
+![Item Bought](custBuy.png)
 
 * If the store does not have enough inventory to fullfill your order, then it will tell you that there is insufficent inventory and the products table will re-display and allow you to change your order.
 
-![Insufficient Stock](customerInsuff.gif)
+![Insufficient Stock](custInsuff.png)
 
 ## The Manager
 * As a manager, when you log into the store you are presented with 4 menu options: View Products for Sale, View Low Inventory, Add to Inventory, and Add New Product.

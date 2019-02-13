@@ -36,6 +36,7 @@ function updateProductSales(idChoice, totalSales) {
 	}], function(err, res) {
 		if (err) throw err;
 	});
+	connection.end();
 }
 
 function updateProduct(idChoice, totalQuantity) {
@@ -60,13 +61,13 @@ function userTransaction(userChoice) {
 				head: ['Item id', 'Product', 'Price'],
 				colWidths: [50, 50, 50]
 			});
-      console.log("\nSorry, we do not have the inventory to complete your order." + "\nPlease try buying less units or choose another product." + "\n");
+			displayTable();
+      	console.log("\nSorry, we do not have the inventory to complete your order." + "\nPlease try buying less units or choose another product." + "\n");
       
 		} else if (choiceQuantity < res[0].stock_quantity) {
 			updateProduct(itemId, quantityTotal);
 			updateProductSales(itemId, totalSales);
 		}
-		displayTable();
 	});
 }
 //this function displays the products table
