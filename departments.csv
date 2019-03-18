@@ -1,0 +1,7 @@
+department_id,department_name,over_head_costs
+("sporting goods",100),
+("home",200),
+("electronics",300),
+("clothing",50),
+("lawn and garden",200),
+("hardware",400)
